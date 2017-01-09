@@ -54,8 +54,6 @@ configure_view(struct wlc_view *view, uint32_t edges, const struct wlc_geometry 
       if (xdg_popup->xdg_positioner && (xdg_popup->xdg_positioner->flags & WLC_XDG_POSITIONER_HAS_SIZE))
          size = xdg_popup->xdg_positioner->size;
       
-      printf(" > zxdg_popup_v6_send_configure %i,%i %ix%i\n",
-            g->origin.x, g->origin.y, size.w, size.h);
       zxdg_popup_v6_send_configure(r, g->origin.x, g->origin.y, size.w, size.h);
    } else if (view->shell_surface && (r = wl_resource_from_wlc_resource(view->shell_surface, "shell-surface"))) {
       wl_shell_surface_send_configure(r, edges, g->size.w, g->size.h);
