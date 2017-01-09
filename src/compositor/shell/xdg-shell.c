@@ -141,20 +141,12 @@ xdg_cb_create_positioner(struct wl_client *client, struct wl_resource *resource,
    if (!(xdg_shell = wl_resource_get_user_data(resource)) )
       return;
    
-   struct wlc_xdg_positioner *positioner;
-   positioner = malloc(sizeof(struct wlc_xdg_positioner));
-   if (positioner == NULL) {
-      wl_client_post_no_memory(client);
-      return;
-   }
-   
-   positioner->client = client;
-   
    wlc_resource r;
-   if (!(r = wlc_resource_create(&xdg_shell->positioners, client, &zxdg_positioner_v6_interface, wl_resource_get_version(resource), 1, id))) {
-      free(positioner);
+   if (!(r = wlc_resource_create(&xdg_shell->positioners, client, &zxdg_positioner_v6_interface, wl_resource_get_version(resource), 1, id)))
       return;
-   }
+   
+   struct wlc_xdg_positioner *positioner = convert_from_wlc_resource(r, "xdg-positioner");
+   positioner->client = client;
    
    wlc_resource_implement(r, wlc_xdg_positioner_implementation(), NULL);
    wl_resource_set_user_data(wl_resource_from_wlc_resource(r, "xdg-positioner"), (void*)positioner);
@@ -220,7 +212,7 @@ wlc_xdg_shell(struct wlc_xdg_shell *xdg_shell)
    if (!wlc_source(&xdg_shell->surfaces, "xdg-surface", NULL, NULL, 32, sizeof(struct xdg_surface)) ||
        !wlc_source(&xdg_shell->toplevels, "xdg-toplevel", NULL, NULL, 32, sizeof(struct wlc_resource)) ||
        !wlc_source(&xdg_shell->popups, "xdg-popup", NULL, NULL, 32, sizeof(struct wlc_resource)) ||
-       !wlc_source(&xdg_shell->positioners, "xdg-positioner", NULL, NULL, 32, sizeof(struct wlc_resource)))
+       !wlc_source(&xdg_shell->positioners, "xdg-positioner", NULL, NULL, 32, sizeof(struct wlc_xdg_positioner)))
       goto fail;
 
    return xdg_shell;
