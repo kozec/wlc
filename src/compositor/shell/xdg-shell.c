@@ -40,17 +40,19 @@ xdg_cb_surface_get_popup(struct wl_client *client, struct wl_resource *resource,
    struct wlc_surface *surface, *psurface;
    if (!(xdg_shell = wl_resource_get_user_data(resource)) || !(surface = xdg_surface_get_surface(convert_from_wl_resource(resource, "xdg-surface"))) || !(psurface = xdg_surface_get_surface(convert_from_wl_resource(parent, "xdg-surface"))))
       return;
+   if (!wl_resource_get_user_data(parent) || !convert_from_wlc_handle((wlc_handle)wl_resource_get_user_data(parent), "view"))
+      return;
 
    wlc_resource r;
    if (!(r = wlc_resource_create(&xdg_shell->popups, client, &zxdg_popup_v6_interface, wl_resource_get_version(resource), 1, id)))
       return;
 
+   struct wlc_xdg_popup *xdg_popup = convert_from_wlc_resource(r, "xdg-popup");
+   assert(xdg_popup);
+   
    struct wlc_xdg_positioner *positioner;
-   if ((positioner = wl_resource_get_user_data(wl_positioner))) {
-      struct wlc_xdg_popup *xdg_popup = convert_from_wlc_resource(r, "xdg-popup");
-	  assert(xdg_popup);
+   if ((positioner = wl_resource_get_user_data(wl_positioner)))
       xdg_popup->xdg_positioner = positioner;
-  }
 
    wlc_resource_implement(r, &zxdg_popup_v6_implementation, NULL);
 
