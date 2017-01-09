@@ -669,6 +669,17 @@ wlc_view_positioner_get_constraint_adjustment(wlc_handle view)
    return WLC_BIT_CONSTRAINT_ADJUSTMENT_NONE;
 }
 
+WLC_API wlc_handle
+wlc_popup_get_parent(wlc_handle view)
+{
+   struct wlc_view *v = convert_from_wlc_handle(view, "view");
+   if ( (v) && (v->xdg_popup) ) {
+      struct wlc_xdg_popup *popup = convert_from_wlc_resource(v->xdg_popup, "xdg-popup");
+      return popup->parent;
+   }
+   return 0;
+}
+
 WLC_API void
 wlc_view_get_visible_geometry(wlc_handle view, struct wlc_geometry *out_geometry)
 {

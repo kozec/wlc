@@ -432,6 +432,9 @@ enum wlc_positioner_gravity_bit wlc_view_positioner_get_gravity(wlc_handle view)
  */
 enum wlc_positioner_constraint_adjustment_bit wlc_view_positioner_get_constraint_adjustment(wlc_handle view);
 
+/** Returns parent view of popup */
+wlc_handle wlc_popup_get_parent(wlc_handle view);
+
 /** Get visible geometry. (what wlc displays) */
 void wlc_view_get_visible_geometry(wlc_handle view, struct wlc_geometry *out_geometry);
 

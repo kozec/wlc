@@ -51,6 +51,7 @@ xdg_cb_surface_get_popup(struct wl_client *client, struct wl_resource *resource,
    assert(xdg_popup);
    
    struct wlc_xdg_positioner *positioner;
+   xdg_popup->parent = (wlc_handle)wl_resource_get_user_data(parent);
    if ((positioner = wl_resource_get_user_data(wl_positioner)))
       xdg_popup->xdg_positioner = positioner;
 
