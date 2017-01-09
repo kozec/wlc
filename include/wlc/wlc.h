@@ -363,6 +363,12 @@ void wlc_view_set_mask(wlc_handle view, uint32_t mask);
 /** Get current geometry. (what client sees) */
 const struct wlc_geometry* wlc_view_get_geometry(wlc_handle view);
 
+/** Get requested size, as requested by positioner defined in xdg-shell v6. Returns NULL if there is no such request */
+const struct wlc_size* wlc_view_get_requested_size(wlc_handle view);
+
+/** Get requested anchor rectangle, as set by positioner defined in xdg-shell v6. Returns NULL if there is no such request */
+const struct wlc_geometry* wlc_view_get_requested_anchor_rect(wlc_handle view);
+
 /** Get visible geometry. (what wlc displays) */
 void wlc_view_get_visible_geometry(wlc_handle view, struct wlc_geometry *out_geometry);
 

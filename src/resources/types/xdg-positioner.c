@@ -7,43 +7,109 @@
 static void
 wlc_xdg_positioner_protocol_set_size(struct wl_client *client, struct wl_resource *resource, int32_t width, int32_t height)
 {
-   (void)client; (void)resource; (void)width; (void)height;
-   STUBL(resource);
+   (void)client;
+   struct wlc_xdg_positioner *positioner;
+   if (!(positioner = wl_resource_get_user_data(resource)))
+      return;
+   
+   if (width < 1 || height < 1) {
+      wl_resource_post_error(resource,
+         ZXDG_POSITIONER_V6_ERROR_INVALID_INPUT,
+         "width and height must be positives and non-zero");
+         return;
+   }
+   positioner->size.w = width;
+   positioner->size.h = height;
+   positioner->flags |= WLC_XDG_POSITIONER_HAS_SIZE;
 }
 
 static void
 wlc_xdg_positioner_protocol_set_anchor_rect(struct wl_client *client, struct wl_resource *resource, int32_t x, int32_t y, int32_t width, int32_t height)
 {
-   (void)client; (void)resource; (void)x; (void)y; (void)width; (void)height;
-   STUBL(resource);
+   (void)client;
+   struct wlc_xdg_positioner *positioner;
+   if (!(positioner = wl_resource_get_user_data(resource)))
+      return;
+   
+   if (width < 1 || height < 1) {
+      wl_resource_post_error(resource,
+         ZXDG_POSITIONER_V6_ERROR_INVALID_INPUT,
+         "width and height must be positives and non-zero");
+         return;
+   }
+   positioner->anchor_rect.origin.x = x;
+   positioner->anchor_rect.origin.y = y;
+   positioner->anchor_rect.size.w = width;
+   positioner->anchor_rect.size.h = height;
+   positioner->flags |= WLC_XDG_POSITIONER_HAS_ANCHOR_RECT;
 }
 
 static void
 wlc_xdg_positioner_protocol_set_anchor(struct wl_client *client, struct wl_resource *resource, enum zxdg_positioner_v6_anchor anchor)
 {
-   (void)client; (void)resource; (void)anchor;
-   STUBL(resource);
+   (void)client;
+   struct wlc_xdg_positioner *positioner;
+   if (!(positioner = wl_resource_get_user_data(resource)))
+      return;
+   
+   if (((anchor & ZXDG_POSITIONER_V6_ANCHOR_TOP ) &&
+         (anchor & ZXDG_POSITIONER_V6_ANCHOR_BOTTOM)) ||
+         ((anchor & ZXDG_POSITIONER_V6_ANCHOR_LEFT) &&
+         (anchor & ZXDG_POSITIONER_V6_ANCHOR_RIGHT))) {
+      wl_resource_post_error(resource,
+         ZXDG_POSITIONER_V6_ERROR_INVALID_INPUT,
+         "same-axis values are not allowed");
+      return;
+   }
+   
+   positioner->anchor = anchor;
+   positioner->flags |= WLC_XDG_POSITIONER_HAS_ANCHOR;
 }
 
 static void
 wlc_xdg_positioner_protocol_set_gravity(struct wl_client *client, struct wl_resource *resource, enum zxdg_positioner_v6_gravity gravity)
 {
-   (void)client; (void)resource; (void)gravity;
-   STUBL(resource);
+   (void)client;
+   struct wlc_xdg_positioner *positioner;
+   if (!(positioner = wl_resource_get_user_data(resource)))
+      return;
+   
+   if (((gravity & ZXDG_POSITIONER_V6_GRAVITY_TOP) &&
+         (gravity & ZXDG_POSITIONER_V6_GRAVITY_BOTTOM)) ||
+         ((gravity & ZXDG_POSITIONER_V6_GRAVITY_LEFT) &&
+         (gravity & ZXDG_POSITIONER_V6_GRAVITY_RIGHT))) {
+      wl_resource_post_error(resource,
+         ZXDG_POSITIONER_V6_ERROR_INVALID_INPUT,
+         "same-axis values are not allowed");
+      return;
+   }
+   
+   positioner->gravity = gravity;
+   positioner->flags |= WLC_XDG_POSITIONER_HAS_GRAVITY;
 }
 
 static void
 wlc_xdg_positioner_protocol_set_constraint_adjustment(struct wl_client *client, struct wl_resource *resource, enum zxdg_positioner_v6_constraint_adjustment constraint_adjustment)
 {
-   (void)client; (void)resource; (void)constraint_adjustment;
-   STUBL(resource);
+   (void)client;
+   struct wlc_xdg_positioner *positioner;
+   if (!(positioner = wl_resource_get_user_data(resource)))
+      return;
+   
+   positioner->constraint_adjustment = constraint_adjustment;
+   positioner->flags |= WLC_XDG_POSITIONER_HAS_CONSTRAINT;
 }
 
 static void
 wlc_xdg_positioner_protocol_set_offset(struct wl_client *client, struct wl_resource *resource, int32_t x, int32_t y)
 {
-	(void)client; (void)resource; (void)x; (void)y;
-	STUBL(resource);
+   (void)client;
+   struct wlc_xdg_positioner *positioner;
+   if (!(positioner = wl_resource_get_user_data(resource)))
+      return;
+   
+   positioner->offset.x = x;
+   positioner->offset.y = y;
 }
 
 WLC_CONST const struct zxdg_positioner_v6_interface*
