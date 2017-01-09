@@ -23,8 +23,8 @@ xdg_surface_get_surface(struct xdg_surface *xdg_surface)
 static void
 xdg_cb_popup_grab(struct wl_client *client, struct wl_resource *resource, struct wl_resource *seat, uint32_t serial)
 {
-   (void)client, (void)seat, (void)serial;
-   STUB(resource);
+   (void)client, (void)seat, (void)resource, (void)serial;
+   STUBL(resource);
 }
 
 static const struct zxdg_popup_v6_interface zxdg_popup_v6_implementation = {
