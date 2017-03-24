@@ -66,7 +66,11 @@ struct wlc_view {
 static inline bool
 is_x11_view(struct wlc_view *view)
 {
+#ifdef ENABLE_XWAYLAND
    return wlc_x11_is_valid_window(&view->x11);
+#else
+   return 0
+#endif
 }
 
 WLC_NONULL void wlc_view_update(struct wlc_view *view);

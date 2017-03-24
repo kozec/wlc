@@ -442,6 +442,12 @@ WLC_NONULL void wlc_view_set_geometry(wlc_handle view, uint32_t edges, const str
 /** Get type bitfield. */
 uint32_t wlc_view_get_type(wlc_handle view);
 
+/**
+ * Returns X11 XID for view type bitfield.
+ * If view is not created by xwayland client, returns 0.
+ */
+uint32_t wlc_view_get_x11_xid(wlc_handle view);
+
 
 /** Set type bit. Toggle indicates whether it is set or not. */
 void wlc_view_set_type(wlc_handle view, enum wlc_view_type_bit type, bool toggle);

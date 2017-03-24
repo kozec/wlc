@@ -702,6 +702,20 @@ wlc_view_get_type(wlc_handle view)
    return (ptr ? *(uint32_t*)ptr : 0);
 }
 
+WLC_API uint32_t
+wlc_view_get_x11_xid(wlc_handle view)
+{
+#ifdef ENABLE_XWAYLAND
+   struct wlc_view *v = convert_from_wlc_handle(view, "view");
+   if (!is_x11_view(v))
+      return 0;
+   return v->x11.id;
+#else
+   return 0;
+#endif
+}
+
+
 WLC_API void
 wlc_view_set_type(wlc_handle view, enum wlc_view_type_bit type, bool toggle)
 {
