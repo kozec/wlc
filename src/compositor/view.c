@@ -715,6 +715,18 @@ wlc_view_get_x11_xid(wlc_handle view)
 #endif
 }
 
+WLC_API bool
+wlc_x11_view_is_deletable(wlc_handle view)
+{
+#ifdef ENABLE_XWAYLAND
+   struct wlc_view *v = convert_from_wlc_handle(view, "view");
+   if (!is_x11_view(v))
+      return false;
+   return v->x11.has_delete_window;
+#else
+   return false;
+#endif
+}
 
 WLC_API void
 wlc_view_set_type(wlc_handle view, enum wlc_view_type_bit type, bool toggle)
